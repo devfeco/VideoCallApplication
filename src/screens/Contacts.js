@@ -33,9 +33,9 @@ export default class Contacts extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigate('Test', {
-            userId: item._id,
-            userName: item.name,
+          navigate('InComingCall', {
+            name: item.name,
+            avatar:item.picture,
           });
         }}
         style={[

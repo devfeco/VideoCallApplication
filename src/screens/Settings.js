@@ -12,7 +12,7 @@ export default class Settings extends Component {
     return (
       <View style={styles.page}>
         <Text> Settings </Text>
-        <Icon name={'settings'} size={24} />
+        <Icon name={'settings'} size={48} />
       </View>
     );
   }
