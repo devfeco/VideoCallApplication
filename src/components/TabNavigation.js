@@ -20,9 +20,9 @@ export default class TabNavigation extends Component {
       <Tab.Navigator
         initialRouteName="Contacts"
         screenOptions={{headerShown: true}}
-        activeColor="#FFE69A"
-        inactiveColor="#212121"
-        barStyle={{backgroundColor: '#92b4ec'}}>
+        activeColor="#212121"
+        inactiveColor="#A098E3"
+        barStyle={{backgroundColor: '#6C5DD2',fontWeight:'bold'}}>
         <Tab.Screen
           name="Home"
           component={Home}
