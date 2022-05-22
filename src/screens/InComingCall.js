@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Pressable, Text, Dimensions } from "react-native";
+import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default class InComingCall extends Component {
   constructor(props) {
     super(props);
     this.state={
-
     }
   }
   render() {
@@ -92,10 +91,5 @@ const styles = StyleSheet.create({
   iconButton:{
     padding:15,
     borderRadius:50,
-  },
-  svgCurve:{
-    position:'absolute',
-    width:Dimensions.get('window').width,
-    bottom:0,
   },
 });
