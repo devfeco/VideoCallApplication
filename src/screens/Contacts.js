@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import data from '../assets/data/contact';
 
-export default class Contacts extends Component {
+export class Contacts extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,7 @@ export default class Contacts extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigate('InComingCall', {
+          navigate('Call', {
             name: item.name,
             avatar:item.picture,
           });

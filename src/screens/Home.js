@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default class Home extends Component {
+export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};

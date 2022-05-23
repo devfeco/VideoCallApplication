@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View , Text , Image , StyleSheet} from 'react-native';
+import { View  , Image , StyleSheet} from 'react-native';
 import {CallActionBox} from '../components'
 
-export class OnCalling extends Component {
+export class Call extends Component {
   constructor(props) {
     super(props);
     this.state={
