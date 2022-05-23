@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export default class InComingCall extends Component {
+export class InComingCall extends Component {
   constructor(props) {
     super(props);
     this.state={

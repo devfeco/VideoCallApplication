@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import Svg , {Path , G} from "react-native-svg";
 
-export default class  extends Component {
+export class WaveBox extends Component {
   constructor(props) {
     super(props);
     this.state={

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Pressable, Dimensions , Text} from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import WaveBox from "./WaveBox";
+import {WaveBox} from '../index'
 
-export default class CallActionBox extends Component {
+export class CallActionBox extends Component {
   constructor(props) {
     super(props);
     this.state={
@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
     color:'white',
     fontWeight:'bold',
     fontSize:16,
-    letterSpacing:1
+    letterSpacing:1,
   }
 });
