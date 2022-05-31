@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 //Screens
 import {TabNavigation} from '../index'
-import {OnCalling , InComingCall , Call , Test} from "../../screens";
+import {Login , OnCalling , InComingCall , Call , Test} from "../../screens";
 
 export class Router extends Component {
   constructor(props) {
@@ -16,7 +16,8 @@ export class Router extends Component {
     const Stack = createNativeStackNavigator();
     return (
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={'Login'}>
+          <Stack.Screen name={'Login'} component={Login}/>
           <Stack.Screen name={'navigation'} component={TabNavigation} />
           <Stack.Screen name={'OnCalling'} component={OnCalling}/>
           <Stack.Screen name={'InComingCall'} component={InComingCall}/>

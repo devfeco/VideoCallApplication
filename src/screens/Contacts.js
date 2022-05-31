@@ -33,9 +33,9 @@ export class Contacts extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigate('Call', {
+          navigate('InComingCall', {
             name: item.name,
-            avatar:item.picture,
+            avatar: item.picture,
           });
         }}
         style={[
