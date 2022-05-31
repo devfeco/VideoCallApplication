@@ -73,5 +73,6 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     fontSize:16,
     letterSpacing:1,
+    fontFamily:''
   }
 });
