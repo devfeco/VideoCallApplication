@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,34 +10,35 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import data from '../assets/data/contact';
+import { Voximplant } from "react-native-voximplant";
+import { useNavigation } from "@react-navigation/native";
 
-export class Contacts extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: '',
-      contacts: data.sort(function (a, b) {
-        if (a.name > b.name) {
-          return 1;
-        } else if (a.name < b.name) {
-          return -1;
-        } else {
-          return 0;
-        }
-      }),
-    };
+const Contacts = () => {
+
+  const [text,setText] = useState('');
+  const [contacts,setContacts] = useState(data);
+
+  const navigation = useNavigation();
+  const client = Voximplant.getInstance();
+
+  const callUser = item => {
+    navigation.navigate('OnCalling',{item});
   }
 
-  renderContactsItem = ({item, index}) => {
-    const {navigate} = this.props.navigation;
+  useEffect(() => {
+    client.on(Voximplant.ClientEvents.IncomingCall, incomingCallEvent => {
+      navigation.navigate('IncomingCall', {call: incomingCallEvent.call});
+    });
+
+    return () => {
+      client.off(Voximplant.ClientEvents.IncomingCall);
+    };
+  }, []);
+
+  const renderContactsItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        onPress={() => {
-          navigate('InComingCall', {
-            name: item.name,
-            avatar: item.picture,
-          });
-        }}
+        onPress={() => callUser(item)}
         style={[
           styles.itemContainer,
           {backgroundColor: index % 2 === 1 ? '#fafafa' : ''},
@@ -51,48 +52,47 @@ export class Contacts extends Component {
     );
   };
 
-  renderHeader = () => {
-    const {text} = this.state;
+  useEffect(() => {
+    setContacts(data.sort(function(a,b){
+      if (a.name > b.name)
+        return 1;
+      else if(b.name > a.name)
+        return -1;
+      else
+        return 0;
+    }));
+    const newData = data.filter(contact =>
+      contact.name
+        .toLowerCase()
+        .includes(text.toLowerCase()));
+
+    setContacts(newData);
+  },[text]);
+
+  const renderHeader = () => {
     return (
-      <View style={styles.searchContainer}>
-        <Icon name="search" size={24} />
-        <TextInput
-          onChangeText={text => {
-            this.setState({
-              text,
-            });
-            this.searchFilter(text);
-          }}
-          value={text}
-          placeholder="Search..."
-          style={styles.searchInput}
-        />
-      </View>
+      <>
+        <View style={styles.searchContainer}>
+          <Icon name="search" size={24} />
+          <TextInput
+            value={text}
+            onChangeText={setText}
+            placeholder="Search..."
+            style={styles.searchInput}
+          />
+        </View>
+      </>
     );
   };
 
-  searchFilter = text => {
-    const newData = data.filter(item => {
-      const listItem = `${item.name.toLowerCase()}`;
-
-      return listItem.indexOf(text.toLowerCase()) > -1;
-    });
-
-    this.setState({
-      contacts: newData,
-    });
-  };
-
-  render() {
-    return (
-      <FlatList
-        ListHeaderComponent={this.renderHeader}
-        renderItem={this.renderContactsItem}
-        keyExtractor={item => item._id}
-        data={this.state.contacts}
-      />
-    );
-  }
+  return (
+    <FlatList
+      ListHeaderComponent={renderHeader}
+      renderItem={renderContactsItem}
+      keyExtractor={item => item._id}
+      data={contacts}
+    />
+  );
 }
 const styles = StyleSheet.create({
   itemContainer: {
@@ -131,3 +131,4 @@ const styles = StyleSheet.create({
     width: '90%',
   },
 });
+export default Contacts;

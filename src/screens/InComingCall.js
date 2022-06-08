@@ -1,50 +1,60 @@
-import React, { Component } from 'react';
+import React, { useEffect , useState } from 'react';
 import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import {useRoute , useNavigation} from "@react-navigation/native";
+import { Voximplant } from "react-native-voximplant";
 
-export class InComingCall extends Component {
-  constructor(props) {
-    super(props);
-    this.state={
-    }
-  }
-  render() {
-    const {navigate} = this.props.navigation;
-    const {params} = this.props.route;
-    const {avatar,name} = params;
+const InComingCall = () => {
 
-    const declineCall = () => {
-      navigate('Contacts');
+  const [caller,setCaller] = useState('');
+  const route = useRoute();
+  const navigation = useNavigation();
+  const {call} = route?.params;
+
+  useEffect(() => {
+    setCaller(call.getEndpoints()[0].displayName);
+    call.on(Voximplant.CallEvents.Disconnected,callEvent => {
+      navigation.navigate('Contacts');
+    });
+
+    return() => {
+      call.off(Voximplant.CallEvents.Disconnected);
     }
-    const acceptCall = () => {
-      navigate('OnCalling',{
-        name: name,
-        avatar:avatar
-      });
-    }
-    return (
-      <>
-        <View style={styles.background}>
-          <Image source={{uri: avatar}} style={{height:'100%',width:'100%'}} blurRadius={1}/>
-        </View>
-        <View style={styles.container}>
-          <View style={styles.nameGroup}>
-            <Image source={{uri:avatar}} style={styles.avatar}/>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.inComingCall}>InComing Call</Text>
-          </View>
-          <View style={styles.buttonGroup}>
-            <Pressable onPress={declineCall} style={[styles.iconButton,{backgroundColor:'#EF5461'}]}>
-              <MaterialIcons name={'phone-hangup'} size={30} color={'white'}/>
-            </Pressable>
-            <Pressable onPress={acceptCall} style={[styles.iconButton,{backgroundColor:'#0DCD73'}]}>
-              <MaterialIcons name={'phone'} size={30} color={'white'}/>
-            </Pressable>
-          </View>
-        </View>
-      </>
-    );
+  },[]);
+
+  const onDecline = () => {
+    call.decline();
   }
+
+  const onAccept = () => {
+    navigation.navigate('OnCalling',{
+      call,
+      isIncomingCall:true,
+    });
+  }
+
+  return (
+    <>
+      <View style={styles.background}>
+        <Image source={{ uri : item.picture }} style={{height:'100%',width:'100%'}} blurRadius={1}/>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.nameGroup}>
+          <Image source={{ uri : item.picture }} style={styles.avatar}/>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.inComingCall}>InComing Call</Text>
+        </View>
+        <View style={styles.buttonGroup}>
+          <Pressable onPress={onDecline} style={[styles.iconButton,{backgroundColor:'#EF5461'}]}>
+            <MaterialIcons name={'phone-hangup'} size={30} color={'white'}/>
+          </Pressable>
+          <Pressable onPress={onAccept} style={[styles.iconButton,{backgroundColor:'#0DCD73'}]}>
+            <MaterialIcons name={'phone'} size={30} color={'white'}/>
+          </Pressable>
+        </View>
+      </View>
+    </>
+  );
 }
 const styles = StyleSheet.create({
   background:{
@@ -93,3 +103,4 @@ const styles = StyleSheet.create({
     borderRadius:50,
   },
 });
+export default InComingCall;

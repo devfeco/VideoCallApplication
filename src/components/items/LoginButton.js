@@ -11,7 +11,7 @@ export class LoginButton extends Component {
   render() {
     return (
       <View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={this.props.onSignInPress}>
           <Text style={styles.buttonText}>{this.props.title}</Text>
         </TouchableOpacity>
       </View>

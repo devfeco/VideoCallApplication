@@ -4,7 +4,8 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //Screens
-import {Home , Settings , Contacts} from "../../screens";
+import {Home , Settings } from "../../screens";
+import Contacts from "../../screens/Contacts";
 
 export class TabNavigation extends Component {
   constructor(props) {
