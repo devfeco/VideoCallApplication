@@ -4,4 +4,3 @@ export * from './items/WaveBox';
 export * from './items/CallActionBox';
 export * from './items/LoginInput';
 export * from './items/LoginButton';
-export * from './forms/LoginForm';

@@ -1,9 +1,43 @@
-import React, { Component } from 'react';
-import { View , StyleSheet , Text , KeyboardAvoidingView , ScrollView , TouchableOpacity} from 'react-native';
+import React, { Component } from "react";
+import { View, StyleSheet, Text, KeyboardAvoidingView, ScrollView, TouchableOpacity } from "react-native";
 
-import { LoginButton, LoginForm } from "../components";
+import {APP_NAME,ACC_NAME} from "../assets/Constants";
+import { LoginButton, LoginInput } from "../components";
+import { Voximplant } from "react-native-voximplant";
 
 export class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      username:'',
+      password:'',
+    }
+  }
+
+  client = Voximplant.getInstance();
+
+  signIn = async () => {
+    try {
+      const Username = `${this.state.username}@${APP_NAME}.${ACC_NAME}.voximplant.com`;
+      await this.client.login(Username,this.state.password);
+      this.redirectHome();
+    }catch (e) {
+      console.log(e);
+    }
+  }
+
+  async componentDidMount() {
+    const status = await this.client.getClientState();
+    if(status === Voximplant.ClientState.DISCONNECTED)
+      await this.client.connect();
+    else if(status === Voximplant.ClientState.LOGGED_IN)
+      this.redirectHome();
+  }
+
+  redirectHome(){
+    this.props.navigation.navigate('navigation');
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -15,13 +49,19 @@ export class Login extends Component {
         <KeyboardAvoidingView behavior={'position'}>
           <ScrollView>
             <View style={styles.loginArea}>
-              <LoginForm/>
-              <LoginButton title={'Sign In Now'}/>
+              <Text style={styles.title}>Sign In</Text>
+              <LoginInput autoCapitalize={'none'} placeholder={'Username'} onChangeText={text => {
+                this.setState({ username: text });
+              }}/>
+              <LoginInput secureTextEntry={true} placeholder={'Password'} onChangeText={text => {
+                this.setState({ password: text });
+              }}/>
+              <LoginButton title={'Sign In Now'} onSignInPress={this.signIn}/>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
         <View style={styles.footer}>
-          <Text style={styles.footerTitle}>Got an Account</Text>
+          <Text style={styles.footerTitle}>Got an Account </Text>
           <TouchableOpacity>
             <Text style={styles.signupButton}>Sign Up</Text>
           </TouchableOpacity>
@@ -68,6 +108,11 @@ const styles = StyleSheet.create({
     borderRadius:10,
     elevation:20,
     justifyContent:'center',
+  },
+  title:{
+    marginVertical:10,
+    fontSize:18,
+    color:'#333'
   },
   footer:{
     flexDirection:'row',

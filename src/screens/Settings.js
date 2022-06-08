@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {View, Text, StyleSheet , TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import {Voximplant} from 'react-native-voximplant'
 
 export class Settings extends Component {
   constructor(props) {
@@ -8,11 +9,19 @@ export class Settings extends Component {
     this.state = {};
   }
 
+  client = Voximplant.getInstance();
+
+  signOut = async () => {
+    await this.client.disconnect();
+    this.props.navigation.navigate('Login');
+  }
+
   render() {
     return (
       <View style={styles.page}>
-        <Text> Settings </Text>
-        <Icon name={'settings'} size={48} />
+        <TouchableOpacity onPress={this.signOut}>
+          <Icon name={'logout'} size={48} color={'red'}/>
+        </TouchableOpacity>
       </View>
     );
   }

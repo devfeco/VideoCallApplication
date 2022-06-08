@@ -198,9 +198,9 @@ export default [
 		"company": "GEOFORMA"
 	},
 	{
-		"_id": "5c52de4c853220c9458f9f34",
+		"_id": "test",
 		"picture": "https://randomuser.me/api/portraits/men/34.jpg",
-		"name": "Adriana Carter",
+		"name": "Adriana Test",
 		"company": "COMTRACT"
 	},
 	{
