@@ -258,9 +258,9 @@ export default [
 		"company": "DUOFLEX"
 	},
 	{
-		"_id": "5c52de4ca0ae72e0a293a294",
+		"_id": "losbiku",
 		"picture": "https://randomuser.me/api/portraits/men/44.jpg",
-		"name": "Aileen Greer",
+		"name": "Aileen test 2",
 		"company": "EYERIS"
 	},
 	{

@@ -20,7 +20,7 @@ export class WaveBox extends Component {
             </G>
           </Svg>
         </View>
-        <View style={{backgroundColor:'#6C5DD2',height:50,width:'100%',bottom:0}}></View>
+        <View style={{backgroundColor:'#6C5DD2',height:45,width:'100%',bottom:0}}></View>
       </View>
     );
   }
