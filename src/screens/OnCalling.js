@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Image, StyleSheet, PermissionsAndroid, Alert, Platform, Pressable } from "react-native";
+import { View, StyleSheet, PermissionsAndroid, Alert, Platform, Pressable } from "react-native";
 import {CallActionBox} from '../components'
 import { Voximplant } from "react-native-voximplant";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -15,18 +15,20 @@ const OnCalling = () => {
   const [callStatus,setCallStatus] = useState('Initializing...');
   const [localVideoStreamId,setLocalVideoStreamId] = useState('');
   const [remoteVideoStreamId,setRemoteVideoStreamId] = useState('');
+  const [isMicOn,setMicOn] = useState(false);
+  const [isCameraOn,setCameraOn] = useState(false);
 
   const route = useRoute();
   const navigation = useNavigation();
   const client = Voximplant.getInstance();
 
-  const {item:user , call:inComingCall , isIncomingCall} = route?.params;
+  const {item:user , call:inComingCall , isIncomingCall , name} = route?.params;
 
   const call = useRef(inComingCall);
   const endpoint = useRef(null);
 
   const goBack = () => {
-    navigation.goBack();
+    navigation.pop();
   }
 
   useEffect(() => {
@@ -66,7 +68,7 @@ const OnCalling = () => {
     const answerCall = async () => {
       subscribeToCallEvents();
       endpoint.current = call.current.getEndpoints()[0];
-      subscribeToCallEvents();
+      subscribeToEndpointEvent();
       call.current.answer(callSettings);
     }
 
@@ -87,6 +89,8 @@ const OnCalling = () => {
         Voximplant.CallEvents.LocalVideoStreamAdded,
         callEvent => {
           setLocalVideoStreamId(callEvent.videoStream.id);
+          console.log("remote : "+remoteVideoStreamId);
+          console.log('local : '+localVideoStreamId);
         },
       );
       call.current.on(Voximplant.CallEvents.EndpointAdded, callEvent => {
@@ -100,6 +104,8 @@ const OnCalling = () => {
         Voximplant.EndpointEvents.RemoteVideoStreamAdded,
         endpointEvent => {
           setRemoteVideoStreamId(endpointEvent.videoStream.id);
+          console.log("remote : "+remoteVideoStreamId);
+          console.log('local : '+localVideoStreamId);
         },
       );
     };
@@ -131,17 +137,42 @@ const OnCalling = () => {
     call.current.hangup();
   }
 
+  const onToggleAudio = () => {
+    call.current.sendAudio(isMicOn);
+    setMicOn(!isMicOn);
+  }
+
+  const onToggleCamera = () => {
+    call.current.sendVideo(isCameraOn);
+    setCameraOn(!isCameraOn);
+  }
+
   return (
     <View style={styles.page}>
       <Pressable onPress={goBack} style={styles.backButton}>
           <Icon name={'chevron-back'} color={'white'} size={25}/>
       </Pressable>
 
-      <Voximplant.VideoView videoStreamId={remoteVideoStreamId} style={styles.remoteVideo}/>
-      <Voximplant.VideoView videoStreamId={localVideoStreamId} style={styles.localVideo}/>
+      <Voximplant.VideoView
+        videoStreamId={localVideoStreamId}
+        style={styles.localVideo}
+        scaleType={Voximplant.RenderScaleType.SCALE_FIT}
+        showOnTop={true}
+      />
+      <Voximplant.VideoView
+        videoStreamId={remoteVideoStreamId}
+        style={styles.remoteVideo}
+        scaleType={Voximplant.RenderScaleType.SCALE_FIT}
+      />
 
 
-      <CallActionBox onHangupPress={onHangupPress} name={user.name}/>
+      <CallActionBox
+        onHangupPress={onHangupPress}
+        onToggleAudio={onToggleAudio}
+        onToggleCamera={onToggleCamera}
+        mic={isMicOn ? 'microphone-off' : 'microphone'}
+        camera={isCameraOn ? 'camera-off' : 'camera'}
+      />
     </View>
   );
 }
@@ -150,13 +181,30 @@ const styles = StyleSheet.create({
     flex:1,
     alignContent:'flex-end',
   },
-  avatarContainer:{
-    position:'absolute',
-    width:'100%',
-    height:'87%',
-    alignItems:'center',
-    justifyContent:'center',
-    opacity:0.8
+  localVideo: {
+    width: 100,
+    height: 150,
+    borderRadius: 10,
+    position: 'absolute',
+    right: 10,
+    top: 100,
+    zIndex:0,
+  },
+  remoteVideo: {
+    backgroundColor: '#988bf7',
+    borderRadius: 10,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 100,
+    zIndex:-1
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 10,
+    zIndex: 10,
   },
 });
 export default OnCalling;

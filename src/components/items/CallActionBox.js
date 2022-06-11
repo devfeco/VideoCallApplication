@@ -12,32 +12,19 @@ export class CallActionBox extends Component {
     }
   }
   render() {
-    const onToggleMicrophone = () => {
-      this.setState({
-        isMicOn:!this.state.isMicOn,
-      })
-    }
-    const onToggleCamera = () => {
-      this.setState({
-        isCameraOn:!this.state.isCameraOn,
-      })
-    }
     return (
       <>
         <WaveBox customStyles={styles.svgCurve}/>
         <View style={styles.container}>
-          <Pressable onPress={onToggleCamera} style={styles.iconButton}>
-            <MaterialIcons name={this.state.isCameraOn ? 'camera-off' : 'camera'} size={30} color={'white'}/>
+          <Pressable onPress={this.props.onToggleCamera} style={styles.iconButton}>
+            <MaterialIcons name={this.props.camera} size={30} color={'white'}/>
           </Pressable>
           <Pressable onPress={this.props.onHangupPress} style={[styles.iconButton,{backgroundColor:'#FF4D50'}]}>
             <MaterialIcons name={'phone-hangup'} size={30} color={'white'}/>
           </Pressable>
-          <Pressable onPress={onToggleMicrophone} style={styles.iconButton}>
-            <MaterialIcons name={this.state.isMicOn ? 'microphone-off' : 'microphone'} size={30} color={'white'}/>
+          <Pressable onPress={this.props.onToggleAudio} style={styles.iconButton}>
+            <MaterialIcons name={this.props.mic} size={30} color={'white'}/>
           </Pressable>
-        </View>
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>{this.props.name}</Text>
         </View>
       </>
     );
@@ -57,6 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A098E3',
     padding: 15,
     borderRadius: 50,
+    marginBottom:25
   },
   svgCurve:{
     position:'absolute',

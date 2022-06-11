@@ -27,7 +27,7 @@ const Contacts = () => {
 
   useEffect(() => {
     client.on(Voximplant.ClientEvents.IncomingCall, incomingCallEvent => {
-      navigation.navigate('IncomingCall', {call: incomingCallEvent.call});
+      navigation.navigate('InComingCall', {call: incomingCallEvent.call});
     });
 
     return () => {
@@ -46,7 +46,7 @@ const Contacts = () => {
         <Image style={styles.avatar} source={{uri: item.picture}} />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{item.name}</Text>
-          <Text>{item._id}</Text>
+          <Text style={{color:'#2b2b2b'}}>{item._id}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -73,11 +73,12 @@ const Contacts = () => {
     return (
       <>
         <View style={styles.searchContainer}>
-          <Icon name="search" size={24} />
+          <Icon name="search" size={24} color={'black'}/>
           <TextInput
             value={text}
             onChangeText={setText}
             placeholder="Search..."
+            placeholderTextColor={'#2b2b2b'}
             style={styles.searchInput}
           />
         </View>
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
+    color:'#2b2b2b'
   },
   searchContainer: {
     flexDirection: 'row',

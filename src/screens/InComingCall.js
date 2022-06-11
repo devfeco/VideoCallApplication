@@ -3,13 +3,14 @@ import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {useRoute , useNavigation} from "@react-navigation/native";
 import { Voximplant } from "react-native-voximplant";
+import bg from '../assets/images/bg.png'
 
 const InComingCall = () => {
 
   const [caller,setCaller] = useState('');
   const route = useRoute();
   const navigation = useNavigation();
-  const {call} = route?.params;
+  const {call} = route.params;
 
   useEffect(() => {
     setCaller(call.getEndpoints()[0].displayName);
@@ -19,7 +20,7 @@ const InComingCall = () => {
 
     return() => {
       call.off(Voximplant.CallEvents.Disconnected);
-    }
+    };
   },[]);
 
   const onDecline = () => {
@@ -30,18 +31,18 @@ const InComingCall = () => {
     navigation.navigate('OnCalling',{
       call,
       isIncomingCall:true,
+      name:caller
     });
   }
 
   return (
     <>
       <View style={styles.background}>
-        <Image source={{ uri : item.picture }} style={{height:'100%',width:'100%'}} blurRadius={1}/>
+        <Image source={bg} style={{height:'100%',width:'100%'}} blurRadius={1}/>
       </View>
       <View style={styles.container}>
         <View style={styles.nameGroup}>
-          <Image source={{ uri : item.picture }} style={styles.avatar}/>
-          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.name}>{caller}</Text>
           <Text style={styles.inComingCall}>InComing Call</Text>
         </View>
         <View style={styles.buttonGroup}>
@@ -73,12 +74,6 @@ const styles = StyleSheet.create({
     flex:7,
     alignItems:'center',
     justifyContent:'center',
-  },
-  avatar:{
-    height:150,
-    width:150,
-    borderRadius:100,
-    margin:10,
   },
   name:{
     color:'white',

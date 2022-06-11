@@ -50,10 +50,10 @@ export class Login extends Component {
           <ScrollView>
             <View style={styles.loginArea}>
               <Text style={styles.title}>Sign In</Text>
-              <LoginInput autoCapitalize={'none'} placeholder={'Username'} onChangeText={text => {
+              <LoginInput autoCapitalize={'none'} placeholder={'Username'} placeholderTextColor={'#999'} onChangeText={text => {
                 this.setState({ username: text });
               }}/>
-              <LoginInput secureTextEntry={true} placeholder={'Password'} onChangeText={text => {
+              <LoginInput secureTextEntry={true} placeholder={'Password'} placeholderTextColor={'#999'} onChangeText={text => {
                 this.setState({ password: text });
               }}/>
               <LoginButton title={'Sign In Now'} onSignInPress={this.signIn}/>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff',
     padding:20,
     marginHorizontal:40,
-    marginBottom:30,
+    marginBottom:60,
     borderRadius:10,
     elevation:20,
     justifyContent:'center',
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     alignItems:'flex-end',
   },
   footerTitle:{
+    color:'#2b2b2b',
     marginVertical:10
   },
   signupButton:{
