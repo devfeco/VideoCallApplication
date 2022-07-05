@@ -1,5 +1,9 @@
-Gaziosmanpaşa Üniversitesi Bilgisayar Mühendisliği Uygulamaları I 
+Gaziosmanpaşa Üniversitesi Bilgisayar Mühendisliği Uygulamaları I
+
+
 Görüntülü Görüşme Uygulaması
+
+
 Feyzullah Ardahan
 
 
